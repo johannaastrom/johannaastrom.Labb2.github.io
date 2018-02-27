@@ -1,0 +1,12 @@
+.header{
+ background-color: #d4d4f7;
+ height: 70px;
+}
+#headerText{
+    padding: 10px;
+    font-size: 25px;
+    font-style: verdana;
+}
+.middle{
+    margin: 20px;
+}
