@@ -1,54 +1,27 @@
-/*let result = document.getElementById('result');
-let el = document.getElementById('myButton');
-el.addEventListener('click', function(event) {
-	result.innerHTML += 'Clicked! ';
-}); 
+let titles = [];
+let authors = [];
 
-let book = {
-	author/*: 'JK rowling'*//*,
-	title/*: 'harry potter'*/
-/*}; 
+let titleInput = document.getElementById('title');
+let authorInput = document.getElementById('author');
 
-function listOfUsers(){
-for(let x of book){
-    console.log(x);
-    }
-}
+let listBox = document.getElementById('result');
+let addButton = document.getElementById('addButton');
 
-function myFunction() {
-    document.getElementById("demo").innerHTML = "Added new book"; //add object to list here
-}
-*/
-
-
-//new code
-
-var titles  = [];
-var authors   = [];
-
-var titleInput  = document.getElementById('title');
-var authorInput   = document.getElementById('author');
-
-var listBox  = document.getElementById('result');
-
-myButton.addEventListener('click', function(event) {
-	
-   function insert ( ) {
+function insert () {
     titles.push( titleInput.value );
     authors.push( authorInput.value );
-     
-    clearAndShow();
-   }
-   
-   function clearAndShow () {
-     // Clear the fields
-     titleInput.value = '';
-     authorInput.value = '';
-     
-     // Show the output
-     //listBox.innerHTML = '';
-     
-     listBox.innerHML = authors + ', ' + titles + '<br/>';
-   }
+
+    // Print output
+    titleInput.value = '';
+    authorInput.value = '';
+
+        listBox.innerHTML = '';
+        listBox.innerHTML += authors + ', ' + titles + '<br/>';
+}
+
+addButton.addEventListener('click', function(event) { 
+
+   insert();
+
 });
 
