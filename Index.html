@@ -9,33 +9,39 @@
 <link rel="stylesheet" href="Labb2.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
+<script src="Labb2.js"></script>
+
 </head>
 
-<body bgcolor="#E6E6FA">
+<body class="background">
 
 <div class="header">
-    <p id="headerText">
-       The Books
-    </p>
+
+    <img id="headerPic" src="C:\Users\johan\Downloads\AdobeSpark.png" alt="headerImg"/>
+
 </div>
 
 <div class="middle">
 
-            <h4>Please enter new author and title:</h4>
+            <h4>Please enter a new book to your list:</h4>
             <input id="title" type="text" placeholder="Title" />
             <input id="author" type="text" placeholder="Author" />
         
             <button id="addButton">add new</button>
-            <div id="result"></div>
-        </br>
-            <script src="Labb2.js"></script>
+            <p>
+            <div id="result"></div> 
+            <ul id="list"></ul>
+            </p>
 
+            <p><button id="deleteButton">remove list</button></p>
 </div>
 
 <div class="footer">
+
         <p id="footerText">
-           Footer
+           By Jojo & Anekl
         </p>
+        
 </div>
 
 </body>

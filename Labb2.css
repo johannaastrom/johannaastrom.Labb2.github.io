@@ -1,27 +1,49 @@
 .header{
  background-color: #d4d4f7;
- height: 70px;
+ height:170px;
 }
 #headerText{
     padding: 20px;
     font-size: 25px;
-    font-style: verdana;
 }
 .middle{
     margin: 20px;
 }
-#myButton{
-    color: red;
-}
-#result{
-    color: green;
-}
 .footer{
-    background-color: #d4d4f7;
+    background-color: #E6E6FA;
     height: 70px;
 }
 #footerText{
     padding: 20px;
-    font-size: 15px;
-    font-style: verdana;
+    font-size: 10px;
+}
+.background{
+    background-color: #E6E6FA;
+}
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+}
+#box{
+    padding: 17px;
+    border: 1px solid black;
+    width: 500px;
+}
+#headerPic{
+    position: relative;
+    left: 40px;
+    height: 180px;
+    width: 350px;
+}
+#deleteOneButton{
+    position: absolute;
+    float:left;
+    left: 430px;
+}
+#editButton{
+    position: absolute;
+    float:left;
+    left: 380px;
 }
