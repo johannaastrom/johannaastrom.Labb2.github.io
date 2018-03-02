@@ -12,8 +12,6 @@ window.addEventListener('load', function(){
     let editButton = document.getElementById('editButton');
     let list = document.getElementById('list');
 
-    //let btn = '<button id="deleteOneButton">remove</button>';
-
     //old code
 /*function insert () {
     titles.push(titleInput.value);
@@ -32,13 +30,14 @@ window.addEventListener('load', function(){
     }
 
     addButton.addEventListener('click', function(event) { 
+        if(!titleInput){
+            const li = document.createElement('li');
+            li.innerText = titleInput.value + ', by ' + authorInput.value;
+            li.innerHTML = `<div id="box">${titleInput.value}, by ${authorInput.value} <button id="editButton">edit</button> <button id="deleteOneButton">remove</button></div>`;
+            list.appendChild(li);
 
-        const li = document.createElement('li');
-        li.innerText = titleInput.value + ', by ' + authorInput.value;
-        li.innerHTML = `<div id="box">${titleInput.value}, by ${authorInput.value} <button id="editButton">edit</button> <button id="deleteOneButton" position="absolute" right="5px">remove</button></div>`;
-        list.appendChild(li);
-
-        Clear();
+            Clear();
+        }
     });
 
     deleteButton.addEventListener('click', function(event) {
