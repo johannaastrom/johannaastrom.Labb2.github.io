@@ -5,7 +5,7 @@ window.addEventListener('load', function(){
     let titleInput = document.getElementById('title');
     let authorInput = document.getElementById('author');
 
-    let listBox = document.getElementById('result');
+    let listBox = document.getElementById('result'); //används denna???
     let addButton = document.getElementById('addButton');
     let deleteButton = document.getElementById('deleteButton');
     let deleteOneButton = document.getElementById('deleteOneButton');
@@ -19,7 +19,6 @@ window.addEventListener('load', function(){
     let requestKey = 'requestKey';
     let key = '1pN6M'; //tidigare: j3pod
     const viewQuery = `op=select&key=${key}`;
-    let addQuery = `op=insert&title=${titleInput.value}&author=${titleInput.value}&key=${key}`;
     let counter = 0;
 
     function ClearTextboxes (){
@@ -37,13 +36,17 @@ window.addEventListener('load', function(){
     }
 
     function addAjax(){ //fixa denna function, varför skickas bara tomma objekt?? + fixa if sats om error eller success
+        let titleInput = document.getElementById('title').value;
+        let authorInput = document.getElementById('author').value;
+        let addQuery = `op=insert&title=${titleInput}&author=${authorInput}&key=${key}`;
+        
         fetch(url+addQuery)
         .then(response => { 
           console.log('added: ' + authorInput.value + ', ' + titleInput.value); //vad är detta
           return response.json(); //om det är json data retuneras ett promise.
         })
         .then(json => {
-          console.log('Added new item: ', json);
+          console.log('Added new item: ', json.data);
           addItemToList();
         })
         .catch(obj => {
@@ -60,39 +63,29 @@ window.addEventListener('load', function(){
         })
         .then(obj =>{
             if(counter === 1){
-              responseLabel.innerText = 'request denied, try again'
+              responseLabel.innerText = obj.message + ', please try again';
               console.log(obj.data);
               counter = 0;
             }
             else if(obj.status === 'success'){
-                console.log(obj);
-                console.log(counter);
+                console.log('object: ' + obj);
+                console.log('counter: ' + counter);
                 console.log(obj.data);
         
                 responseLabel.innerHTML = obj.data.map( book => `${book.title} by ${book.author} <br></br>` )
               }
               else{
-                counter++;
-                console.log(counter);
-                 viewAjax();
+                counter++; //lägg till if-sats om counter är === 10 bla bla
+                console.log('counter: ' + counter);
+                viewAjax();
                }
+               console.log('request sent'); //ha kvar detta eller inte?,den skrivs ut två gånger..
             })
-        console.log('request sent'); //ha kvar detta eller inte?
       }
 
-    addButton.addEventListener('click', function(event) { 
-        addAjax();
-    });
-
-    deleteButton.addEventListener('click', function(event) {
-        
-        list.innerHTML = '';
-
-    });
-
-    viewAjaxBtn.addEventListener('click', function(event){
-        viewAjax();
-    });
+    addButton.addEventListener('click', addAjax);
+    viewAjaxBtn.addEventListener('click', viewAjax);
+    deleteButton.addEventListener('click', function(event) { list.innerHTML = ''; });
 
 });
    /* deleteOneButton.addEventListener('click', function(event) {
