@@ -5,35 +5,21 @@ window.addEventListener('load', function(){
     let titleInput = document.getElementById('title');
     let authorInput = document.getElementById('author');
 
-    let listBox = document.getElementById('result'); //används denna???
     let addButton = document.getElementById('addButton');
-    //let deleteButton = document.getElementById('deleteButton');
     let deleteOneButton = document.getElementById('deleteOneButton');
     let editButton = document.getElementById('editButton');
     let list = document.getElementById('list');
 
+    //INSERT KEY HERE
+    let key = 'ufa70';
+
     //API
-    let viewAjaxBtn = document.getElementById('viewAjaxBtn');
+    let viewAjaxButton = document.getElementById('viewAjaxButton');
     let responseLabel = document.getElementById('response');
+    let requestKeyButton = document.getElementById('requestKeyButton');
     let url = 'https://www.forverkliga.se/JavaScript/api/crud.php?';
     let requestKey = 'requestKey';
-    let key = '1pN6M'; //tidigare: j3pod
     const viewQuery = `op=select&key=${key}`;
-    let requestKeyButton = document.getElementById('requestKeyButton');
-
-    //Request function key button
-    function requestAPIKey(){
-      let responseDiv = document.getElementById('response');
-      fetch(url+requestKey)
-      .then ( response => {
-      console.log('Response from server: ' + response)
-      return response.text();
-    })
-      .then (text => {
-      console.log('We got text: ', text);
-      responseDiv.innerText = text;
-    })
-  }
 
     function ClearTextboxes (){
         titleInput.value = '';
@@ -56,7 +42,6 @@ window.addEventListener('load', function(){
         let addQuery = `op=insert&title=${titleInput}&author=${authorInput}&key=${key}`;
         fetch(url+addQuery)
         .then(response => { 
-          console.log('added: ' + authorInput + ', ' + titleInput);
           return response.json();
         })
         .then(obj => {
@@ -65,19 +50,19 @@ window.addEventListener('load', function(){
             addCounter = 0;
           }
           else if(obj.status === 'success'){
-          console.log('Added new item: ', obj.data);
+          console.log(`Successfully added new book: ${titleInput}, by ${authorInput}`);
           addItemToList();
           addCounter = 0;
           responseLabel.innerHTML = '';
           }
           else if(obj.status !== 'success'){
             addCounter++;
-            console.log('counter: ' + addCounter);
+            console.log('Counter: ' + addCounter);
             addAjax();
           }
         })
         .catch(obj => {
-          responseLabel.innerText = 'ERROR' + obj;
+          responseLabel.innerText = 'ERROR: ' + obj;
         })
         console.log('request sent');
       }
@@ -95,8 +80,6 @@ window.addEventListener('load', function(){
               viewCounter = 0;
             }
             else if(obj.status === 'success'){
-                console.log('object: ' + obj);
-                console.log('counter: ' + viewCounter);
                 console.log(obj.data);
                 viewCounter = 0;
         
@@ -104,16 +87,28 @@ window.addEventListener('load', function(){
               }
             else{
                 viewCounter++;
-                console.log('counter: ' + viewCounter);
+                console.log('Counter: ' + viewCounter);
                 viewAjax();
             }
         })
       }
 
+    function requestAPIKey(){
+      let responseDiv = document.getElementById('response');
+      fetch(url+requestKey)
+      .then ( response => {
+      console.log('Response from server: ' + response)
+      return response.text();
+    })
+      .then (text => {
+      console.log('We got text: ', text);
+      responseDiv.innerText = text;
+    })
+  }
+
     requestKeyButton.addEventListener('click', requestAPIKey);
     addButton.addEventListener('click', addAjax);
-    viewAjaxBtn.addEventListener('click', viewAjax);
-    deleteButton.addEventListener('click', function(event) { list.innerHTML = ''; });
+    viewAjaxButton.addEventListener('click', viewAjax);
 
 });
    /* deleteOneButton.addEventListener('click', function(event) {
