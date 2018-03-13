@@ -7,7 +7,7 @@ window.addEventListener('load', function(){
 
     let listBox = document.getElementById('result'); //används denna???
     let addButton = document.getElementById('addButton');
-    let deleteButton = document.getElementById('deleteButton');
+    //let deleteButton = document.getElementById('deleteButton');
     let deleteOneButton = document.getElementById('deleteOneButton');
     let editButton = document.getElementById('editButton');
     let list = document.getElementById('list');
@@ -19,7 +19,21 @@ window.addEventListener('load', function(){
     let requestKey = 'requestKey';
     let key = '1pN6M'; //tidigare: j3pod
     const viewQuery = `op=select&key=${key}`;
-    let counter = 0;
+    let requestKeyButton = document.getElementById('requestKeyButton');
+
+    //Request function key button
+    function requestAPIKey(){
+      let responseDiv = document.getElementById('response');
+      fetch(url+requestKey)
+      .then ( response => {
+      console.log('Response from server: ' + response)
+      return response.text();
+    })
+      .then (text => {
+      console.log('We got text: ', text);
+      responseDiv.innerText = text;
+    })
+  }
 
     function ClearTextboxes (){
         titleInput.value = '';
@@ -29,25 +43,38 @@ window.addEventListener('load', function(){
     function addItemToList(){
         const li = document.createElement('li');
         li.innerText = titleInput.value + ', by ' + authorInput.value;
-        li.innerHTML = `<div id="box">${titleInput.value}, by ${authorInput.value} <button id="editButton">edit</button> <button id="deleteOneButton">remove</button></div>`;
+        li.innerHTML = `<div id="box">Added ${titleInput.value}, by ${authorInput.value}<button id="editButton">edit</button> <button id="deleteOneButton">remove</button></div>`;
         list.appendChild(li);
 
         ClearTextboxes();
     }
 
-    function addAjax(){ //fixa denna function, varför skickas bara tomma objekt?? + fixa if sats om error eller success
+    let addCounter = 0;
+    function addAjax(){
         let titleInput = document.getElementById('title').value;
         let authorInput = document.getElementById('author').value;
         let addQuery = `op=insert&title=${titleInput}&author=${authorInput}&key=${key}`;
-        
         fetch(url+addQuery)
         .then(response => { 
-          console.log('added: ' + authorInput.value + ', ' + titleInput.value); //vad är detta
-          return response.json(); //om det är json data retuneras ett promise.
+          console.log('added: ' + authorInput + ', ' + titleInput);
+          return response.json();
         })
-        .then(json => {
-          console.log('Added new item: ', json.data);
+        .then(obj => {
+          if(addCounter === 10){
+            responseLabel.innerText = obj.message + ', please try again';
+            addCounter = 0;
+          }
+          else if(obj.status === 'success'){
+          console.log('Added new item: ', obj.data);
           addItemToList();
+          addCounter = 0;
+          responseLabel.innerHTML = '';
+          }
+          else if(obj.status !== 'success'){
+            addCounter++;
+            console.log('counter: ' + addCounter);
+            addAjax();
+          }
         })
         .catch(obj => {
           responseLabel.innerText = 'ERROR' + obj;
@@ -55,34 +82,35 @@ window.addEventListener('load', function(){
         console.log('request sent');
       }
 
+      let viewCounter = 0;
       function viewAjax(){
-
         fetch(url+viewQuery)
         .then(response => { 
-          return response.json(); //om det är json/text data retuneras ett promise.
+          return response.json();
         })
         .then(obj =>{
-            if(counter === 1){
+            if(viewCounter === 10){
               responseLabel.innerText = obj.message + ', please try again';
               console.log(obj.data);
-              counter = 0;
+              viewCounter = 0;
             }
             else if(obj.status === 'success'){
                 console.log('object: ' + obj);
-                console.log('counter: ' + counter);
+                console.log('counter: ' + viewCounter);
                 console.log(obj.data);
+                viewCounter = 0;
         
                 responseLabel.innerHTML = obj.data.map( book => `${book.title} by ${book.author} <br></br>` )
               }
-              else{
-                counter++; //lägg till if-sats om counter är === 10 bla bla
-                console.log('counter: ' + counter);
+            else{
+                viewCounter++;
+                console.log('counter: ' + viewCounter);
                 viewAjax();
-               }
-               console.log('request sent'); //ha kvar detta eller inte?,den skrivs ut två gånger..
-            })
+            }
+        })
       }
 
+    requestKeyButton.addEventListener('click', requestAPIKey);
     addButton.addEventListener('click', addAjax);
     viewAjaxBtn.addEventListener('click', viewAjax);
     deleteButton.addEventListener('click', function(event) { list.innerHTML = ''; });
